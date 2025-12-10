@@ -42,12 +42,12 @@ class HHParser:
         keywords: str, 
         area: int = 1,  # 1 - Москва, 2 - СПб, 113 - Россия
         per_page: int = 100,
-        max_pages: Optional[int] = None,
+        max_pages: Optional[int] = 100,  # По умолчанию до 100 страниц = 10000 вакансий
         salary: Optional[int] = None,
         only_with_salary: bool = False,
         period: Optional[int] = None,
         excluded_text: Optional[str] = None,
-        order_by: str = 'relevance'
+        order_by: str = 'publication_time'  # По умолчанию - свежие первыми!
     ) -> List[Dict]:
         """
         Поиск вакансий по ключевым словам
@@ -56,15 +56,16 @@ class HHParser:
             keywords: Ключевые слова для поиска
             area: ID региона (1 - Москва, 2 - СПб, 113 - Россия)
             per_page: Количество результатов на странице (до 100)
-            max_pages: Максимальное количество страниц (None = все)
+            max_pages: Максимальное количество страниц (по умолчанию 100 = до 10000 вакансий)
             salary: Минимальная зарплата (например: 50000)
             only_with_salary: Только вакансии с указанной зарплатой
             period: Вакансии за последние N дней (1, 3, 7, 30)
             excluded_text: Слова для исключения из результатов
-            order_by: Сортировка ('relevance', 'publication_time', 'salary_desc')
+            order_by: Сортировка ('publication_time', 'relevance', 'salary_desc')
+                     По умолчанию 'publication_time' - свежие вакансии первыми!
         
         Returns:
-            Список словарей с данными вакансий
+            Список словарей с данными вакансий (отсортированных по дате публикации)
         """
         all_vacancies = []
         page = 0
